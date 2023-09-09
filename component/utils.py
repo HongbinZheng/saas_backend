@@ -13,11 +13,28 @@ def get_fbo_shippment_detail(start_date,end_date,items,headers):
         offset += 1000
         fbo_shippment_list = get_fbo_shippment_report(
             start_date, end_date, offset,headers)
-        fbo_shippment = fbo_shippment_list[:] + fbo_shippment
+        if len(fbo_shippment_list) != 0:
+            fbo_shippment = fbo_shippment_list[:] + fbo_shippment
+    print(fbo_shippment)
     for i in fbo_shippment:
         for j in i['products']:
             offer_id = j['offer_id']
             sku = j['sku']
+            if len(offer_id) == 0:
+                offer_id = 'ozon_fbo_'+str(sku)
+                items[offer_id] = {
+                    "present_stock": 0,
+                    "reserved_stock":0,
+                     "price": j['price'],
+                    "old_price": j['price']
+                }
+                # new_key = {i[offer_id]: {
+                #     "present_stock": 0,
+                #     "reserved_stock":0,
+                #      "price": j['price']['price'],
+                #     "old_price": j['price']['old_price']
+                # }}
+                # items.update(new_key)
             orders_quantity = 0
             for k in i['financial_data']['products']:
                 if k['product_id'] == sku:
