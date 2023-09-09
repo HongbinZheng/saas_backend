@@ -8,6 +8,7 @@ from model.transaction_type import TransactionType
 app = Flask(__name__)
 
 @app.route('/')
+@cross_origin()
 def hellp_world():
     return 'Hello world'
 
@@ -24,4 +25,4 @@ def fin_report():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0',ssl_contex='adhoc')
